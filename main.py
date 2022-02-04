@@ -26,7 +26,7 @@ def get_args() -> argparse.Namespace:
     required_args.add_argument('-c', '--config-file', **config_file_params)
     # Optional args
     optional_args = parser.add_argument_group('Optional Arguments')
-    optional_args.add_argument('-l', '--log', required=False, default='log.out',
+    optional_args.add_argument('-l', '--log', required=False, default='out.log',
                                help="Name of the output log file")
     optional_args.add_argument('-d', '--debug', action='store_true',
                                help='Enables the debug log messages')
