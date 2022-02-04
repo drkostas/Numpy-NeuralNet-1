@@ -11,7 +11,7 @@ https://github.com/drkostas/COSC525-Project1/blob/master/LICENSE)
 + [Installing the requirements](#installing)
 + [Running the code](#run_locally)
     + [Execution Options](#execution_options)
-        + [COSC525Project1 Main](#src_main)
+        + [main.py](#src_main)
 + [Todo](#todo)
 + [License](#license)
 
