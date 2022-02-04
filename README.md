@@ -8,7 +8,7 @@ https://github.com/drkostas/COSC525-Project1/blob/master/LICENSE)
 + [About](#about)
 + [Getting Started](#getting_started)
     + [Prerequisites](#prerequisites)
-+ [Installing, Testing, Building](#installing)
++ [Installing the requirements](#installing)
 + [Running the code](#run_locally)
     + [Execution Options](#execution_options)
         + [COSC525Project1 Main](#src_main)
@@ -47,7 +47,7 @@ $ echo $SHELL
 
 ```
 
-## Installing, Testing, Building <a name = "installing"></a>
+## Installing the requirements <a name = "installing"></a>
 
 All the installation steps are being handled by the [Makefile](Makefile). You can either use conda or
 venv by setting the flag `env=<conda|venv>`. To load an env file use the
