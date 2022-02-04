@@ -1,7 +1,5 @@
-# COSC525: Project 1<img src='https://github.com/drkostas/COSC525-Project1/blob/master/img/snek.png' align='right' width='180' height='104'>
+# COSC525: Project 1: Artificial Neural Networks
 
-[![CircleCI](https://circleci.com/gh/drkostas/COSC525-Project1/tree/master.svg?style=svg)](
-https://circleci.com/gh/drkostas/COSC525-Project1/tree/master)
 [![GitHub license](https://img.shields.io/badge/license-Apache-blue.svg)](
 https://github.com/drkostas/COSC525-Project1/blob/master/LICENSE)
 
@@ -19,7 +17,7 @@ https://github.com/drkostas/COSC525-Project1/blob/master/LICENSE)
 
 ## About <a name = "about"></a>
 
-Project 1 for the Deep Learning class (COSC 525). Involves the development of a FeedForward Neural
+Project 1 for the Deep Learning class (COSC 525). Involves the development of a Neural
 Network.
 
 This project already includes the following packages:
