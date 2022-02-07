@@ -45,7 +45,7 @@ class FullyConnectedLayer:
         """
         wdeltas = []
         for ind, neuron in enumerate(self.neurons):
-            wdelta = neuron.calcpartialderivative(wdeltas_next[ind])
+            wdelta = neuron.calc_partial_derivative(wdeltas_next[ind])
             neuron.update_weights()
             wdeltas.append(wdelta)
         return wdeltas

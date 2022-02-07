@@ -124,8 +124,6 @@ class NeuralNetwork:
         :return: None
         """
         outputs = self.calculate(inputs)
-        derivative = self.loss_derivative(outputs, targets)
+        wdeltas = self.loss_derivative(outputs, targets)
         for i in range(len(self.layers) - 1, -1, -1):
-            derivative = self.layers[i].calculate_wdeltas(derivative)
-
-
+            wdeltas = self.layers[i].calculate_wdeltas(wdeltas)
