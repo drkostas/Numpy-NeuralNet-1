@@ -40,7 +40,7 @@ def main():
     """This is the main function of main.py
 
     Example:
-        python src/main.py -c confs/template_conf.yml -l logs/output.log
+        python main.py -c confs/main_conf.yml
     """
 
     # Initializing
@@ -48,15 +48,28 @@ def main():
     ColorLogger.setup_logger(log_path=args.log, debug=args.debug, clear_log=True)
     # Load the configuration
     config = Configuration(config_src=args.config_file)
+    nn_conf = config.get_config('neural-network')[0]['config']
+    dataset_conf = config.get_config('dataset')[0]['config']
+    dataset_type = config.get_config('dataset')[0]['type']
 
     # ------- Start of Code ------- #
+    if dataset_type == 'xor':
+        inputs = np.array(dataset_conf['inputs'])
+        outputs = np.array(dataset_conf['outputs'])
+        netWork = NeuralNetwork(num_layers=nn_conf['num_layers'],
+                                num_neurons=nn_conf['num_neurons'],
+                                activations=nn_conf['activations'],
+                                num_inputs=2,
+                                loss_function=nn_conf['loss_function'],
+                                learning_rate=nn_conf['learning_rate'])
+        # test train for xor
+        for epoch in range(nn_conf['epochs']):
+            netWork.train(inputs, outputs)
+            loss = netWork.calculate_loss(inputs, outputs)
+            print(f"Epoch: {epoch} Loss: {loss}")
 
-    netWork = NeuralNetwork(2, [2, 1], ["sigmoid", "sigmoid", "sigmoid"], 2, "mean_squared", .1)
-    # test train for 0,0 to lead to 0
-    for i in range(0,10):
-        netWork.train([0,0],[0])
-
-    print(netWork.calculate([0,0]))
+        for inp, outp in zip(inputs, outputs):
+            print(netWork.calculate(inp), outp)
 
 
 if __name__ == '__main__':

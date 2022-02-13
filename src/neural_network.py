@@ -41,7 +41,7 @@ class NeuralNetwork:
         """
         for layer in self.layers:
             inputs = layer.calculate(inputs)
-        outputs = inputs
+        outputs = np.array(inputs)
         return outputs
 
     def calculate_loss(self, inputs: np.ndarray, targets: np.ndarray) -> float:
