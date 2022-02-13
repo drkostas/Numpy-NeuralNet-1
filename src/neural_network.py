@@ -24,14 +24,14 @@ class NeuralNetwork:
         self.learning_rate = learning_rate
 
         if weights is None:
-            weights = [(np.random.randn(num_neurons[i], num_neurons[i - 1]))
+            weights = [(np.random.randn(num_neurons[i], (num_inputs+1) if i == 0 else (num_neurons[i - 1])+1))
                             for i in range(0, num_layers)]
 
         self.layers = []
         for i in range(num_layers):
             self.layers.append(FullyConnectedLayer(num_neurons[i], self.activations[i],
                                                    num_inputs if i == 0 else num_neurons[i - 1],
-                                                   self.learning_rate, weights[i],))
+                                                   self.learning_rate, weights[i]))
 
     def calculate(self, inputs: np.ndarray) -> np.ndarray:
         """
@@ -51,7 +51,7 @@ class NeuralNetwork:
         :param targets: The targets for the inputs.
         :return: The loss of the network.
         """
-        outputs = self.calculate(inputs)
+        outputs = np.array(self.calculate(inputs))
         if self.loss_function == "cross_entropy":
             return self.cross_entropy_loss(outputs, targets)
         elif self.loss_function == "mean_squared":
@@ -77,7 +77,7 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The mean squared loss of the network.
         """
-        return np.sum((outputs - targets) ** 2) / outputs.shape[0]
+        return np.sum((outputs - targets)**2) / outputs.shape[0]
 
     def loss_derivative(self, outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
         """
@@ -113,7 +113,7 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The derivative of the mean squared loss of the network.
         """
-        return 2 * (np.array(outputs) - np.array(targets)) / np.array(outputs).shape[0]
+        return 2*((np.array(outputs) - np.array(targets))) / np.array(outputs).shape[0]
 
     def train(self, inputs: np.ndarray, targets: np.ndarray) -> None:
         """
@@ -124,5 +124,6 @@ class NeuralNetwork:
         """
         outputs = self.calculate(inputs)
         wdeltas = [self.loss_derivative(outputs, targets)]
+
         for i in range(len(self.layers) - 1, -1, -1):
             wdeltas = self.layers[i].calculate_wdeltas(wdeltas)

@@ -51,12 +51,29 @@ def main():
 
     # ------- Start of Code ------- #
 
-    netWork = NeuralNetwork(2, [2, 1], ["sigmoid", "sigmoid", "sigmoid"], 2, "mean_squared", .1)
-    # test train for 0,0 to lead to 0
-    for i in range(0,10):
-        netWork.train([0,0],[0])
+    #weights = [np.array([[1,.5 ] ])]
 
-    print(netWork.calculate([0,0]))
+    # XOR
+    xorNet = NeuralNetwork(2, [3,1], ["sigmoid","sigmoid"], 2, "mean_squared", 5)
+    err = 10
+    count = 0
+    xorDataIn = [[0,0],[1,0],[0,1],[1,1]]
+    xorDataOut = [[0],[1],[1],[0]]
+
+    while err>.001 and count<10000:
+        for i in range(len(xorDataIn)):
+            xorNet.train(xorDataIn[i],xorDataOut[i])
+        err = 0
+        for i in range(len(xorDataIn)):
+            err = err+xorNet.calculate_loss(xorDataIn[i],np.array(xorDataOut[i]))
+        count = count+1
+
+    print(err)
+    print(count)
+    for i in range(len(xorDataIn)):
+        print(xorNet.calculate(xorDataIn[i]))
+
+
 
 
 if __name__ == '__main__':

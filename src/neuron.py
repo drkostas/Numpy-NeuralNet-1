@@ -28,8 +28,9 @@ class Neuron:
     # Receives a vector of inputs and determines the nodes output using
     # the stored weights and the activation function
     def calculate(self, inputs):
-        self.inputs = inputs
-        self.net = np.sum(inputs * self.weights)
+        self.inputs = inputs.copy()
+        self.inputs.append(1)
+        self.net = np.sum(self.inputs * self.weights)
         return self.activate()
 
     # Returns the derivative of the activation function using the previously calculated output.
@@ -41,7 +42,7 @@ class Neuron:
 
     # Calculates and saves the partial derivative with respect to the weights
     def derivative(self, delta):
-        self.partial_der = self.weights * delta
+        self.partial_der = np.array(self.inputs) * delta
 
     # Calculates the new delta*w and calls upon the derivative function
     def calc_partial_derivative(self, deltaw_1):
