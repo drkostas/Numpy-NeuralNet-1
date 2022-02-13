@@ -11,8 +11,9 @@ neural-network:
         - sigmoid
       loss_function: mean_squared
       learning_rate: 0.3
-      epochs: 100
+      epochs: 1000
     type: feedforward
+
 dataset: # multiple datasets can be defined
   - config:
       inputs:
@@ -30,3 +31,4 @@ dataset: # multiple datasets can be defined
         - 1
         - 0
     type: xor
+

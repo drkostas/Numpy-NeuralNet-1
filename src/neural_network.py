@@ -51,13 +51,16 @@ class NeuralNetwork:
         :param targets: The targets for the inputs.
         :return: The loss of the network.
         """
-        outputs = np.array(self.calculate(inputs))
-        if self.loss_function == "cross_entropy":
-            return self.cross_entropy_loss(outputs, targets)
-        elif self.loss_function == "mean_squared":
-            return self.mean_squared_loss(outputs, targets)
-        else:
-            raise ValueError("Invalid loss function.")
+        err = 0
+        for i in range(len(inputs)):
+            outputs = np.array(self.calculate(inputs[i]))
+            if self.loss_function == "cross_entropy":
+                err = err + self.cross_entropy_loss(outputs, targets[i])
+            elif self.loss_function == "mean_squared":
+                err = err + self.mean_squared_loss(outputs, targets[i])
+            else:
+                raise ValueError("Invalid loss function.")
+        return err
 
     @staticmethod
     def cross_entropy_loss(outputs: np.ndarray, targets: np.ndarray) -> float:
@@ -122,8 +125,10 @@ class NeuralNetwork:
         :param targets: The targets for the inputs.
         :return: None
         """
-        outputs = self.calculate(inputs)
-        wdeltas = [self.loss_derivative(outputs, targets)]
 
-        for i in range(len(self.layers) - 1, -1, -1):
-            wdeltas = self.layers[i].calculate_wdeltas(wdeltas)
+        for i in range(len(inputs)):
+            outputs = self.calculate(inputs[i])
+            wdeltas = [self.loss_derivative(outputs, targets[i])]
+
+            for j in range(len(self.layers) - 1, -1, -1):
+                wdeltas = self.layers[j].calculate_wdeltas(wdeltas)

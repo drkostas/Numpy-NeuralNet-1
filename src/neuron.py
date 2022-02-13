@@ -28,8 +28,7 @@ class Neuron:
     # Receives a vector of inputs and determines the nodes output using
     # the stored weights and the activation function
     def calculate(self, inputs):
-        self.inputs = inputs.copy()
-        self.inputs.append(1)
+        self.inputs = np.append(inputs.copy(), [1])
         self.net = np.sum(self.inputs * self.weights)
         return self.activate()
 
