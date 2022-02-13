@@ -5,7 +5,7 @@ from typing import *
 
 class NeuralNetwork:
     def __init__(self, num_layers: int, num_neurons: List[int], activations: List[str],
-                 num_inputs: int, loss_function: str, learning_rate: float, weights: List[np.ndarray]):
+                 num_inputs: int, loss_function: str, learning_rate: float, weights: List[np.ndarray] = None):
         """
         Initializes a neural network with the given parameters.
         :param num_layers: The number of layers in the network.
@@ -22,17 +22,16 @@ class NeuralNetwork:
         self.num_inputs = num_inputs
         self.loss_function = loss_function
         self.learning_rate = learning_rate
+
         if weights is None:
-            self.weights = [np.random.randn(num_neurons[i], num_neurons[i - 1])
-                            for i in range(1, num_layers)]
-        else:
-            self.weights = weights
+            weights = [(np.random.randn(num_neurons[i], num_neurons[i - 1]))
+                            for i in range(0, num_layers)]
 
         self.layers = []
         for i in range(num_layers):
             self.layers.append(FullyConnectedLayer(num_neurons[i], self.activations[i],
                                                    num_inputs if i == 0 else num_neurons[i - 1],
-                                                   self.weights[i]))
+                                                   self.learning_rate, weights[i],))
 
     def calculate(self, inputs: np.ndarray) -> np.ndarray:
         """
@@ -114,7 +113,7 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The derivative of the mean squared loss of the network.
         """
-        return 2 * (outputs - targets) / outputs.shape[0]
+        return 2 * (np.array(outputs) - np.array(targets)) / np.array(outputs).shape[0]
 
     def train(self, inputs: np.ndarray, targets: np.ndarray) -> None:
         """
@@ -124,6 +123,6 @@ class NeuralNetwork:
         :return: None
         """
         outputs = self.calculate(inputs)
-        wdeltas = self.loss_derivative(outputs, targets)
+        wdeltas = [self.loss_derivative(outputs, targets)]
         for i in range(len(self.layers) - 1, -1, -1):
             wdeltas = self.layers[i].calculate_wdeltas(wdeltas)

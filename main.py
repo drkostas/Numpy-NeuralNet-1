@@ -1,6 +1,7 @@
 import traceback
 import argparse
 
+import numpy as np
 from src import Configuration, ColorLogger, Neuron, FullyConnectedLayer, NeuralNetwork
 
 logger = ColorLogger(logger_name='Main', color='yellow')
@@ -49,6 +50,13 @@ def main():
     config = Configuration(config_src=args.config_file)
 
     # ------- Start of Code ------- #
+
+    netWork = NeuralNetwork(2, [2, 1], ["sigmoid", "sigmoid", "sigmoid"], 2, "mean_squared", .1)
+    # test train for 0,0 to lead to 0
+    for i in range(0,10):
+        netWork.train([0,0],[0])
+
+    print(netWork.calculate([0,0]))
 
 
 if __name__ == '__main__':

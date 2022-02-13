@@ -4,15 +4,13 @@ import numpy as np
 class Neuron:
     # ACT_FUNCTION, NUM_INPUTS, LEARNING_RATE, [INIT_WEIGHTS]
 
-    def __init__(self, activation: str, num_inputs: int, lr: float, weights: np.ndarray = None):
+    def __init__(self, activation: str, num_inputs: int, lr: float, weights: np.ndarray):
         # Initializes all input vars
         self.activation = activation
         self.num_inputs = num_inputs
         self.lr = lr
-        if weights is None:
-            self.weights = (np.random.rand(self.num_inputs) - .5) * 2
-        else:
-            self.weights = weights
+
+        self.weights = weights
         # Initialize all other object vars
         self.output = None
         self.inputs = None
