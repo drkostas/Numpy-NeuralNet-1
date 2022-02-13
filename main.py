@@ -40,7 +40,7 @@ def main():
     """This is the main function of main.py
 
     Example:
-        python src/main.py -c confs/template_conf.yml -l logs/output.log
+        python main.py -c confs/main_conf.yml
     """
 
     # Initializing
@@ -48,11 +48,28 @@ def main():
     ColorLogger.setup_logger(log_path=args.log, debug=args.debug, clear_log=True)
     # Load the configuration
     config = Configuration(config_src=args.config_file)
+    nn_conf = config.get_config('neural-network')[0]['config']
+    dataset_conf = config.get_config('dataset')[0]['config']
+    dataset_type = config.get_config('dataset')[0]['type']
 
     # ------- Start of Code ------- #
+    if dataset_type == 'xor':
+        inputs = np.array(dataset_conf['inputs'])
+        outputs = np.array(dataset_conf['outputs'])
+        netWork = NeuralNetwork(num_layers=nn_conf['num_layers'],
+                                num_neurons=nn_conf['num_neurons'],
+                                activations=nn_conf['activations'],
+                                num_inputs=2,
+                                loss_function=nn_conf['loss_function'],
+                                learning_rate=nn_conf['learning_rate'])
+        # test train for xor
+        for epoch in range(nn_conf['epochs']):
+            netWork.train(inputs, outputs)
+            loss = netWork.calculate_loss(inputs, outputs)
+            print(f"Epoch: {epoch} Loss: {loss}")
 
-    #weights = [np.array([[1,.5 ] ])]
-
+    """ This is what I had working, obviouslly everything would need to be linked to inputs, but this is how the data 
+        needs to look currently in order to function."""
     # XOR
     xorNet = NeuralNetwork(2, [3,1], ["sigmoid","sigmoid"], 2, "mean_squared", 5)
     err = 10
@@ -73,6 +90,10 @@ def main():
     for i in range(len(xorDataIn)):
         print(xorNet.calculate(xorDataIn[i]))
 
+
+
+        for inp, outp in zip(inputs, outputs):
+            print(netWork.calculate(inp), outp)
 
 
 

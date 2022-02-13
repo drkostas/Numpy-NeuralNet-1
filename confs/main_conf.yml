@@ -1,17 +1,32 @@
 tag: project1
 neural-network:
   - config:
-      num_hidden_layers: 1
+      num_layers: 2
+      num_neurons:
+        - 2
+        - 1
       activations:
         - sigmoid
         - sigmoid
-      loss_functions:
-        - mse
-    type: basic
+        - sigmoid
+      loss_function: mean_squared
+      learning_rate: 0.3
+      epochs: 100
+    type: feedforward
 dataset: # multiple datasets can be defined
   - config:
-      path: data/data.txt
-    type: txt # to load from file
-  - config:
-      name: xor
-    type: internal # to be generated inside the code
+      inputs:
+        - - 0
+          - 0
+        - - 0
+          - 1
+        - - 1
+          - 0
+        - - 1
+          - 1
+      outputs:
+        - 0
+        - 1
+        - 1
+        - 0
+    type: xor
