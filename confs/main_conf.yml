@@ -1,6 +1,16 @@
 tag: project1
 neural-network:
   - config:
+      num_layers: 1
+      num_neurons:
+        - 1
+      activations:
+        - sigmoid
+      loss_function: mean_squared
+      learning_rate: 0.3
+      epochs: 1000
+    type: single_neuron
+  - config:
       num_layers: 2
       num_neurons:
         - 2
@@ -12,8 +22,7 @@ neural-network:
       loss_function: mean_squared
       learning_rate: 0.3
       epochs: 1000
-    type: feedforward
-
+      type: 2x1_net
 dataset: # multiple datasets can be defined
   - config:
       inputs:
