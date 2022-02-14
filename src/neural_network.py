@@ -56,8 +56,8 @@ class NeuralNetwork:
             outputs = np.array(self.calculate(inputs[i]))
             if self.loss_function == "cross_entropy":
                 err = err + self.cross_entropy_loss(outputs, targets[i])
-            elif self.loss_function == "mean_squared":
-                err = err + self.mean_squared_loss(outputs, targets[i])
+            elif self.loss_function == "square_error":
+                err = err + self.square_error_loss(outputs, targets[i])
             else:
                 raise ValueError("Invalid loss function.")
         return err
@@ -73,7 +73,7 @@ class NeuralNetwork:
         return -np.sum(targets * np.log(outputs)) / outputs.shape[0]
 
     @staticmethod
-    def mean_squared_loss(outputs: np.ndarray, targets: np.ndarray) -> float:
+    def square_error_loss(outputs: np.ndarray, targets: np.ndarray) -> float:
         """
         Calculates the mean squared loss of the network for the given outputs and targets.
         :param outputs: The outputs of the network.
@@ -91,8 +91,8 @@ class NeuralNetwork:
         """
         if self.loss_function == "cross_entropy":
             return self.cross_entropy_loss_derivative(outputs, targets)
-        elif self.loss_function == "mean_squared":
-            return self.mean_squared_loss_derivative(outputs, targets)
+        elif self.loss_function == "square_error":
+            return self.square_error_loss_derivative(outputs, targets)
         else:
             raise ValueError("Invalid loss function.")
 
@@ -108,7 +108,7 @@ class NeuralNetwork:
         return outputs - targets
 
     @staticmethod
-    def mean_squared_loss_derivative(outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
+    def square_error_loss_derivative(outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
         """
         Calculates the derivative of the mean squared loss of the network
         for the given outputs and targets.

@@ -74,18 +74,31 @@ def main():
                             num_inputs=num_inputs,
                             loss_function=nn_conf['loss_function'],
                             learning_rate=nn_conf['learning_rate'])
-    # Train the network
-    logger.nl()  # New line
-    logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset')
-    for epoch in range(nn_conf['epochs']):
-        netWork.train(inputs, outputs)
-        loss = netWork.calculate_loss(inputs, outputs)
-        if epoch % 200 == 0:
-            logger.info(f"Epoch: {epoch} Loss: {loss}")
-    # Test on the predictions
-    logger.info(f'Predictions on the {dataset_type} dataset', color='cyan')
-    for inp, outp in zip(inputs, outputs):
-        logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
+    if args.dataset != 'class_example':
+        # Train the network
+        logger.nl()  # New line
+        logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset')
+        for epoch in range(nn_conf['epochs']):
+            netWork.train(inputs, outputs)
+            loss = netWork.calculate_loss(inputs, outputs)
+            if epoch % 200 == 0:
+                logger.info(f"Epoch: {epoch} Loss: {loss}")
+        # Test on the predictions
+        logger.info(f'Predictions on the {dataset_type} dataset', color='cyan')
+        for inp, outp in zip(inputs, outputs):
+            logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
+    else:
+        # Set up the weights and biases based on the class example
+        inputs = inputs[0]
+        print(inputs)
+        hidden_nodes = np.array(dataset_conf['hidden_nodes'])
+        print(hidden_nodes)
+        weights = np.array(dataset_conf['weights'])
+        print(weights)
+        biases = np.array(dataset_conf['biases'])
+        print(biases)
+        desired_outputs = np.array(dataset_conf['desired_outputs'])
+        print(desired_outputs)
 
     # for i in range(len(inputs)):
     #     print(netWork.calculate(inputs[i]))

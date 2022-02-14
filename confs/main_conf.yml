@@ -1,30 +1,71 @@
 tag: project1
 neural-network:
-  - config:
+  - type: single_neuron
+    config:
       num_layers: 1
       num_neurons:
         - 1
       activations:
-        - sigmoid
-      loss_function: mean_squared
+        - logistic
+      loss_function: square_error
       learning_rate: 0.3
       epochs: 1000
-    type: single_neuron
-  - config:
+  - type: 2x1_net
+    config:
       num_layers: 2
       num_neurons:
         - 2
         - 1
       activations:
-        - sigmoid
-        - sigmoid
-        - sigmoid
-      loss_function: mean_squared
+        - logistic
+        - logistic
+        - logistic
+      loss_function: mean_square
       learning_rate: 0.3
       epochs: 1000
-    type: 2x1_net
+  - type: 2x2_net
+    config:
+      num_layers: 2
+      num_neurons:
+        - 2
+        - 2
+      activations:
+        - logistic
+        - logistic
+        - logistic
+      loss_function: cross_entropy
+      learning_rate: 0.3
 dataset: # multiple datasets can be defined
-  - config:
+  - type: class_example
+    config:
+      inputs:
+        - - 0.05
+          - 0.10
+      hidden_nodes:
+        - 0.593  # Hidden Layer
+        - 0.597
+      outputs:
+        - 0.751  # Outputs
+        - 0.773
+      desired_outputs:
+        - 0.01
+        - 0.99
+      weights:
+        - - 0.15
+          - 0.20
+          - 0.25
+          - 0.30
+        - - 0.40
+          - 0.45
+          - 0.50
+          - 0.55
+      biases:
+        - - 0.35
+          - 0.35
+        - - 0.6
+          - 0.6
+  - type: xor
+    config:
       inputs:
         - - 0
           - 0
@@ -39,8 +80,8 @@ dataset: # multiple datasets can be defined
         - 1
         - 1
         - 0
-    type: xor
-  - config:
+  - type: and
+    config:
       inputs:
         - - 0
           - 0
@@ -55,5 +96,3 @@ dataset: # multiple datasets can be defined
         - 0
         - 0
         - 1
-    type: and
-

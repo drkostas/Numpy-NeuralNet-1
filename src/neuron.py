@@ -21,7 +21,7 @@ class Neuron:
     def activate(self):
         if self.activation == "linear":
             self.output = self.net
-        elif self.activation == "sigmoid":
+        elif self.activation == "logistic":
             self.output = 1 / (1 + np.exp(-self.net))
         return self.output
 
@@ -36,7 +36,7 @@ class Neuron:
     def activation_derivative(self):
         if self.activation == "linear":
             return 1
-        elif self.activation == "sigmoid":
+        elif self.activation == "logistic":
             return self.output * (1 - self.output)
 
     # Calculates and saves the partial derivative with respect to the weights
