@@ -49,29 +49,37 @@ def main():
     # Load the configuration
     config = Configuration(config_src=args.config_file)
     nn_conf = config.get_config('neural-network')[0]['config']
-    dataset_conf = config.get_config('dataset')[0]['config']
-    dataset_type = config.get_config('dataset')[0]['type']
+    datasets = config.get_config('dataset')
 
     # ------- Start of Code ------- #
-    if dataset_type == 'xor':
+    for dataset in datasets:
+        dataset_conf = dataset['config']
+        dataset_type = dataset['type']
         inputs = np.array(dataset_conf['inputs'])
         outputs = np.array(dataset_conf['outputs'])
+        num_inputs = inputs.shape[1]
         netWork = NeuralNetwork(num_layers=nn_conf['num_layers'],
                                 num_neurons=nn_conf['num_neurons'],
                                 activations=nn_conf['activations'],
-                                num_inputs=2,
+                                num_inputs=num_inputs,
                                 loss_function=nn_conf['loss_function'],
                                 learning_rate=nn_conf['learning_rate'])
-        # test train for xor
+        # test train
+        logger.nl()  # New line
+        logger.info(f'Training the network on the {dataset_type} dataset')
         for epoch in range(nn_conf['epochs']):
             netWork.train(inputs, outputs)
             loss = netWork.calculate_loss(inputs, outputs)
-            print(f"Epoch: {epoch} Loss: {loss}")
+            if epoch % 50 == 0:
+                logger.info(f"Epoch: {epoch} Loss: {loss}")
+        # test predictions
+        logger.info(f'Predictions on the {dataset_type} dataset')
+        for inp, outp in zip(inputs, outputs):
+            logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
 
 
-
-    for i in range(len(inputs)):
-        print(netWork.calculate(inputs[i]))
+    # for i in range(len(inputs)):
+    #     print(netWork.calculate(inputs[i]))
 
 
 

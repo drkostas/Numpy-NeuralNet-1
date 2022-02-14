@@ -31,4 +31,20 @@ dataset: # multiple datasets can be defined
         - 1
         - 0
     type: xor
+  - config:
+      inputs:
+        - - 0
+          - 0
+        - - 0
+          - 1
+        - - 1
+          - 0
+        - - 1
+          - 1
+      outputs:
+        - 0
+        - 0
+        - 0
+        - 1
+    type: and
 
