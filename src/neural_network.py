@@ -4,12 +4,13 @@ from typing import *
 
 
 class NeuralNetwork:
-    def __init__(self, num_layers: int, num_neurons: List[int], activations: List[str],
-                 num_inputs: int, loss_function: str, learning_rate: float, weights: List[np.ndarray] = None):
+    def __init__(self, num_layers: int, neurons_per_layer: List[int], activations: List[str],
+                 num_inputs: int, loss_function: str, learning_rate: float,
+                 weights: List[np.ndarray] = None):
         """
         Initializes a neural network with the given parameters.
         :param num_layers: The number of layers in the network.
-        :param num_neurons: A list containing the number of neurons in each layer.
+        :param neurons_per_layer: A list containing the number of neurons in each layer.
         :param activations: A list containing the activation functions for each layer.
         :param num_inputs: The number of inputs to the network.
         :param loss_function: The loss function to use.
@@ -17,20 +18,24 @@ class NeuralNetwork:
         :param weights: A list containing the weights for each layer.
         """
         self.num_layers = num_layers
-        self.num_neurons = num_neurons
+        self.neurons_per_layer = neurons_per_layer
         self.activations = activations
         self.num_inputs = num_inputs
         self.loss_function = loss_function
         self.learning_rate = learning_rate
 
         if weights is None:
-            weights = [(np.random.randn(num_neurons[i], (num_inputs+1) if i == 0 else (num_neurons[i - 1])+1))
-                            for i in range(0, num_layers)]
+            weights = [(np.random.randn(neurons_per_layer[i],
+                                        (num_inputs + 1) if i == 0 else (neurons_per_layer[i - 1]) + 1))
+                       for i in range(0, num_layers)]
+            # for weight in weights:
+            #     print(weight.shape)
+            # print(weights)
 
         self.layers = []
         for i in range(num_layers):
-            self.layers.append(FullyConnectedLayer(num_neurons[i], self.activations[i],
-                                                   num_inputs if i == 0 else num_neurons[i - 1],
+            self.layers.append(FullyConnectedLayer(neurons_per_layer[i], self.activations[i],
+                                                   num_inputs if i == 0 else neurons_per_layer[i - 1],
                                                    self.learning_rate, weights[i]))
 
     def calculate(self, inputs: np.ndarray) -> np.ndarray:
@@ -80,7 +85,7 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The mean squared loss of the network.
         """
-        return np.sum((outputs - targets)**2) / outputs.shape[0]
+        return np.sum((outputs - targets) ** 2) / outputs.shape[0]
 
     def loss_derivative(self, outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
         """
@@ -94,7 +99,7 @@ class NeuralNetwork:
         elif self.loss_function == "square_error":
             return self.square_error_loss_derivative(outputs, targets)
         else:
-            raise ValueError("Invalid loss function.")
+            raise ValueError(f"Invalid loss function. `{self.loss_function}` is not suppoerted.")
 
     @staticmethod
     def cross_entropy_loss_derivative(outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
@@ -116,7 +121,7 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The derivative of the mean squared loss of the network.
         """
-        return 2*((np.array(outputs) - np.array(targets))) / np.array(outputs).shape[0]
+        return 2 * ((np.array(outputs) - np.array(targets))) / np.array(outputs).shape[0]
 
     def train(self, inputs: np.ndarray, targets: np.ndarray) -> None:
         """

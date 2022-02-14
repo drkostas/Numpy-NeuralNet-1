@@ -30,7 +30,7 @@ def get_args() -> argparse.Namespace:
                                     "Options (defined in yml): [and, xor, class_example]")
     required_args.add_argument('-n', '--network', required=True,
                                help="The network configuration to use. "
-                                    "Options (defined in yml): [single_neuron, 2x1_net]")
+                                    "Options (defined in yml): [1x1_net, 2x1_net, 2x2_net]")
     required_args.add_argument('-c', '--config-file', **config_file_params)
     # Optional args
     optional_args = parser.add_argument_group('Optional Arguments')
@@ -64,12 +64,11 @@ def main():
     dataset_type = dataset['type']
 
     # ------- Start of Code ------- #
-
     inputs = np.array(dataset_conf['inputs'])
     outputs = np.array(dataset_conf['outputs'])
     num_inputs = inputs.shape[1]
-    netWork = NeuralNetwork(num_layers=nn_conf['num_layers'],
-                            num_neurons=nn_conf['num_neurons'],
+    netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
+                            neurons_per_layer=nn_conf['neurons_per_layer'],
                             activations=nn_conf['activations'],
                             num_inputs=num_inputs,
                             loss_function=nn_conf['loss_function'],
@@ -90,15 +89,14 @@ def main():
     else:
         # Set up the weights and biases based on the class example
         inputs = inputs[0]
-        print(inputs)
         hidden_nodes = np.array(dataset_conf['hidden_nodes'])
-        print(hidden_nodes)
         weights = np.array(dataset_conf['weights'])
-        print(weights)
         biases = np.array(dataset_conf['biases'])
-        print(biases)
         desired_outputs = np.array(dataset_conf['desired_outputs'])
-        print(desired_outputs)
+        print(netWork.layers[0].neurons[0].weights)
+        print(netWork.layers[0].neurons[1].weights)
+        print(netWork.layers[1].neurons[0].weights)
+        print(netWork.layers[1].neurons[1].weights)
 
     # for i in range(len(inputs)):
     #     print(netWork.calculate(inputs[i]))

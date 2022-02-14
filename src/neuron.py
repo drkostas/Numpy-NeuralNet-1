@@ -9,7 +9,6 @@ class Neuron:
         self.activation = activation
         self.num_inputs = num_inputs
         self.lr = lr
-
         self.weights = weights
         # Initialize all other object vars
         self.output = None

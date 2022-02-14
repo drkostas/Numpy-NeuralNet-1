@@ -1,9 +1,8 @@
 tag: project1
 neural-network:
-  - type: single_neuron
+  - type: 1x1_net
     config:
-      num_layers: 1
-      num_neurons:
+      neurons_per_layer:
         - 1
       activations:
         - logistic
@@ -12,21 +11,19 @@ neural-network:
       epochs: 1000
   - type: 2x1_net
     config:
-      num_layers: 2
-      num_neurons:
+      neurons_per_layer:
         - 2
         - 1
       activations:
         - logistic
         - logistic
         - logistic
-      loss_function: mean_square
+      loss_function: square_error
       learning_rate: 0.3
       epochs: 1000
   - type: 2x2_net
     config:
-      num_layers: 2
-      num_neurons:
+      neurons_per_layer:
         - 2
         - 2
       activations:

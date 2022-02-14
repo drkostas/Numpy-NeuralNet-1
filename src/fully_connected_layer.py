@@ -4,22 +4,22 @@ from typing import *
 
 
 class FullyConnectedLayer:
-    def __init__(self, num_neurons: int, activation: str, num_inputs: int, lr: float,
+    def __init__(self, neurons_per_layer: int, activation: str, num_inputs: int, lr: float,
                  weights: np.ndarray):
         """
         Initializes a fully connected layer.
-        :param num_neurons: Number of neurons in the layer
+        :param neurons_per_layer: Number of neurons in the layer
         :param activation: Activation function
         :param num_inputs: Number of inputs to each neuron
         :param lr: Learning rate
         :param weights: Weights of the layer
         """
-        self.num_neurons = num_neurons
+        self.neurons_per_layer = neurons_per_layer
         self.activation = activation
         self.num_inputs = num_inputs
 
         self.neurons = []
-        for neuron_ind in range(self.num_neurons):
+        for neuron_ind in range(self.neurons_per_layer):
             self.neurons.append(Neuron(self.activation, self.num_inputs, lr, weights[neuron_ind]))
         self.lr = lr
 
