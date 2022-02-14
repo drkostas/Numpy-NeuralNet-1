@@ -49,17 +49,22 @@ def main():
     """
 
     # Initializing
+    get_conf = lambda c_type, c: next(filter(lambda x: x['type'] == c_type, c))
     args = get_args()
     ColorLogger.setup_logger(log_path=args.log, clear_log=True)
-    # Load the configuration
+    # Load the configurations
     config = Configuration(config_src=args.config_file)
-    nn_conf = config.get_config('neural-network')[0]['config']
+    nn_structures = config.get_config('neural-network')
+    nn_structure = get_conf(args.network, nn_structures)
+    nn_conf = nn_structure['config']
+    nn_type = nn_structure['type']
     datasets = config.get_config('dataset')
-
-    # ------- Start of Code ------- #
-    dataset = next(filter(lambda x: x['type'] == args.dataset, datasets))
+    dataset = get_conf(args.dataset, datasets)
     dataset_conf = dataset['config']
     dataset_type = dataset['type']
+
+    # ------- Start of Code ------- #
+
     inputs = np.array(dataset_conf['inputs'])
     outputs = np.array(dataset_conf['outputs'])
     num_inputs = inputs.shape[1]
@@ -69,16 +74,16 @@ def main():
                             num_inputs=num_inputs,
                             loss_function=nn_conf['loss_function'],
                             learning_rate=nn_conf['learning_rate'])
-    # test train
+    # Train the network
     logger.nl()  # New line
-    logger.info(f'Training the network on the {dataset_type} dataset')
+    logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset')
     for epoch in range(nn_conf['epochs']):
         netWork.train(inputs, outputs)
         loss = netWork.calculate_loss(inputs, outputs)
-        if epoch % 50 == 0:
+        if epoch % 200 == 0:
             logger.info(f"Epoch: {epoch} Loss: {loss}")
-    # test predictions
-    logger.info(f'Predictions on the {dataset_type} dataset')
+    # Test on the predictions
+    logger.info(f'Predictions on the {dataset_type} dataset', color='cyan')
     for inp, outp in zip(inputs, outputs):
         logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
 

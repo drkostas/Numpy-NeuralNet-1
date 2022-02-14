@@ -22,7 +22,7 @@ neural-network:
       loss_function: mean_squared
       learning_rate: 0.3
       epochs: 1000
-      type: 2x1_net
+    type: 2x1_net
 dataset: # multiple datasets can be defined
   - config:
       inputs:
