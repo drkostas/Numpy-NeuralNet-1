@@ -1,6 +1,5 @@
 import traceback
 import argparse
-import matplotlib as plt
 import numpy as np
 from src import Configuration, ColorLogger, Neuron, FullyConnectedLayer, NeuralNetwork
 from typing import *
@@ -10,7 +9,7 @@ logger = ColorLogger(logger_name='Main', color='yellow')
 
 
 def get_args() -> argparse.Namespace:
-    """Setup the argument parser
+    """Set-up the argument parser
 
     Returns:
         argparse.Namespace:
@@ -67,7 +66,7 @@ def main():
     # ------- Start of Code ------- #
     logger.nl()  # New line
     logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset.', color='green')
-    if args.dataset != 'class_example':
+    if args.dataset != 'class_example':  # XOR and AND cases
         # Train the network
         inputs = np.array(dataset_conf['inputs'])
         outputs = np.array(dataset_conf['outputs'])
@@ -89,12 +88,12 @@ def main():
         logger.info(f'Predictions on the {dataset_type} dataset', color='cyan')
         for inp, outp in zip(inputs, outputs):
             logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
-    else:
+    else:  # Class Example
         # Set up the weights and biases based on the class example
         inputs = [np.array(dataset_conf['inputs'])]
         desired_outputs = np.array(dataset_conf['desired_outputs'])
         weights = [np.array(weight) for weight in dataset_conf['weights']]
-        # Intialize the network using the predefined weights and biases
+        # Initialize the network using the predefined weights and biases
         netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
                                 neurons_per_layer=nn_conf['neurons_per_layer'],
                                 activations=nn_conf['activations'],
@@ -106,10 +105,12 @@ def main():
         logger.info("Pre-training Inputs:")
         logger.info(f"{inputs[0]}", color="cyan")
         logger.info("Pre-training Weights:")
-        logger.info(f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
-                    color="cyan")
-        logger.info(f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
-                    color="cyan")
+        logger.info(
+            f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
+            color="cyan")
+        logger.info(
+            f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
+            color="cyan")
         # Activate the network
         outputs = netWork.calculate(inputs[0])  # Feed-forward the network
         logger.info(f"Outputs after calling `activate()`:")
@@ -122,10 +123,12 @@ def main():
         logger.info("Wdeltas after calling `calculate_wdeltas()`:")
         logger.info(f"{wdeltas}", color="cyan")
         logger.info("Weights after a single step of back-propagation:")
-        logger.info(f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
-                    color="cyan")
-        logger.info(f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
-                    color="cyan")
+        logger.info(
+            f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
+            color="cyan")
+        logger.info(
+            f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
+            color="cyan")
         outputs = netWork.calculate(inputs[0])
         logger.info("Post-training Outputs:")
         logger.info(f"{outputs}", color="cyan")

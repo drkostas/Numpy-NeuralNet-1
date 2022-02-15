@@ -1,7 +1,7 @@
 tag: project1
-neural-network:  # List of neural networks
+neural-network: # List of neural networks
   - type: 1x1_net  # Name of the neural network (same used in the --network option)
-    config:  # Configuration of the neural network
+    config: # Configuration of the neural network
       neurons_per_layer:
         - 1
       activations:
@@ -34,13 +34,13 @@ neural-network:  # List of neural networks
       learning_rate: 0.5
       epochs: 100
       print_every: 100
-dataset:  # List of datasets
+dataset: # List of datasets
   - type: class_example  # Name of the dataset (same used in the --dataset option)
-    config:  # Configuration of the dataset
-      inputs:  # Inputs from the class example
+    config: # Configuration of the dataset
+      inputs: # Inputs from the class example
         - 0.05
         - 0.1
-      desired_outputs:  # Desired outputs from the class example
+      desired_outputs: # Desired outputs from the class example
         - 0.01
         - 0.99
       weights: # 2x2x3 matrix (layer x neuron x weights+bias)
@@ -57,8 +57,8 @@ dataset:  # List of datasets
             - 0.55
             - 0.60
   - type: xor  # Name of the dataset (same used in the --dataset option)
-    config:  # Configuration of the dataset
-      inputs:  # Inputs to the network
+    config: # Configuration of the dataset
+      inputs: # Inputs to the network
         - - 0
           - 0
         - - 0
@@ -67,14 +67,14 @@ dataset:  # List of datasets
           - 0
         - - 1
           - 1
-      outputs:  # Desired outputs
+      outputs: # Desired outputs
         - 0
         - 1
         - 1
         - 0
   - type: and  # Name of the dataset (same used in the --dataset option)
-    config:  # Configuration of the dataset
-      inputs:  # Inputs to the network
+    config: # Configuration of the dataset
+      inputs: # Inputs to the network
         - - 0
           - 0
         - - 0
@@ -83,7 +83,7 @@ dataset:  # List of datasets
           - 0
         - - 1
           - 1
-      outputs:  # Desired outputs
+      outputs: # Desired outputs
         - 0
         - 0
         - 0

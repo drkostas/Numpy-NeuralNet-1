@@ -17,8 +17,7 @@ https://github.com/drkostas/COSC525-Project1/blob/master/LICENSE)
 
 ## About <a name = "about"></a>
 
-Project 1 for the Deep Learning class (COSC 525). Involves the development of a Neural
-Network.
+Project 1 for the Deep Learning class (COSC 525). Involves the development of a Neural Network.
 
 This project already includes the following packages:
 

@@ -26,7 +26,8 @@ class NeuralNetwork:
         # Initialize the weights and biases for each layer.
         if weights is None:
             weights = [(np.random.randn(neurons_per_layer[i],
-                                        (num_inputs + 1) if i == 0 else (neurons_per_layer[i - 1]) + 1))
+                                        (num_inputs + 1) if i == 0 else (
+                                                                        neurons_per_layer[i - 1]) + 1))
                        for i in range(0, num_layers)]
 
         # Initialize the layers
@@ -134,8 +135,8 @@ class NeuralNetwork:
             outputs = self.calculate(inputs[i])
             # Calculate the derivative of the loss of the network for the given outputs and targets.
             act_der = [neuron.activation_derivative()
-                       for neuron in self.layers[len(self.layers)-1].neurons]
-            wdeltas = [self.loss_derivative(outputs, targets[i])*act_der]
+                       for neuron in self.layers[len(self.layers) - 1].neurons]
+            wdeltas = [self.loss_derivative(outputs, targets[i]) * act_der]
             # Update the weights of the network.
             for j in range(len(self.layers) - 1, -1, -1):
                 wdeltas = self.layers[j].calculate_wdeltas(wdeltas)
