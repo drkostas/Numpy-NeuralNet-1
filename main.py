@@ -64,19 +64,18 @@ def main():
     dataset_type = dataset['type']
 
     # ------- Start of Code ------- #
-    inputs = np.array(dataset_conf['inputs'])
-    outputs = np.array(dataset_conf['outputs'])
-    num_inputs = inputs.shape[1]
-    netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
-                            neurons_per_layer=nn_conf['neurons_per_layer'],
-                            activations=nn_conf['activations'],
-                            num_inputs=num_inputs,
-                            loss_function=nn_conf['loss_function'],
-                            learning_rate=nn_conf['learning_rate'])
     if args.dataset != 'class_example':
         # Train the network
         logger.nl()  # New line
         logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset')
+        inputs = np.array(dataset_conf['inputs'])
+        outputs = np.array(dataset_conf['outputs'])
+        netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
+                                neurons_per_layer=nn_conf['neurons_per_layer'],
+                                activations=nn_conf['activations'],
+                                num_inputs=inputs.shape[1],
+                                loss_function=nn_conf['loss_function'],
+                                learning_rate=nn_conf['learning_rate'])
         for epoch in range(nn_conf['epochs']):
             netWork.train(inputs, outputs)
             loss = netWork.calculate_loss(inputs, outputs)
@@ -88,16 +87,32 @@ def main():
             logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
     else:
         # Set up the weights and biases based on the class example
-        inputs = inputs[0]
-        hidden_nodes = np.array(dataset_conf['hidden_nodes'])
-        weights = np.array(dataset_conf['weights'])
-        biases = np.array(dataset_conf['biases'])
+        inputs = np.array(dataset_conf['inputs'])
         desired_outputs = np.array(dataset_conf['desired_outputs'])
-        print(netWork.layers[0].neurons[0].weights)
-        print(netWork.layers[0].neurons[1].weights)
-        print(netWork.layers[1].neurons[0].weights)
-        print(netWork.layers[1].neurons[1].weights)
-
+        weights = [np.array(weight) for weight in dataset_conf['weights']]
+        # Create the network using the predefined weights and biases
+        netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
+                                neurons_per_layer=nn_conf['neurons_per_layer'],
+                                activations=nn_conf['activations'],
+                                num_inputs=2,
+                                loss_function=nn_conf['loss_function'],
+                                learning_rate=nn_conf['learning_rate'],
+                                weights=weights)
+        # Print the weights and biases
+        print("Weights Before:")
+        print(netWork.layers[0].neurons[0].weights, "(h1) x",
+              netWork.layers[1].neurons[0].weights, "(O1)")
+        print(netWork.layers[0].neurons[1].weights, "(h2) x",
+              netWork.layers[1].neurons[1].weights, "(O2)")
+        # Activate the network
+        print("Inputs:", inputs)
+        outputs = netWork.calculate(inputs)
+        print("Outputs:", outputs)
+        # Calculate the wdeltas
+        wdeltas = [netWork.loss_derivative(np.array(outputs), desired_outputs)]
+        for j in range(len(netWork.layers) - 1, -1, -1):
+            wdeltas = netWork.layers[j].calculate_wdeltas(wdeltas)
+        print("Wdeltas:", wdeltas)
     # for i in range(len(inputs)):
     #     print(netWork.calculate(inputs[i]))
 

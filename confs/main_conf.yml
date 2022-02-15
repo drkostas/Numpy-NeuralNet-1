@@ -36,31 +36,24 @@ dataset: # multiple datasets can be defined
   - type: class_example
     config:
       inputs:
-        - - 0.05
-          - 0.10
-      hidden_nodes:
-        - 0.593  # Hidden Layer
-        - 0.597
-      outputs:
-        - 0.751  # Outputs
-        - 0.773
+        - 0.05
+        - 0.1
       desired_outputs:
         - 0.01
         - 0.99
-      weights:
-        - - 0.15
-          - 0.20
-          - 0.25
-          - 0.30
-        - - 0.40
-          - 0.45
-          - 0.50
-          - 0.55
-      biases:
-        - - 0.35
-          - 0.35
-        - - 0.6
-          - 0.6
+      weights: # 2x2x3 matrix (layer x neuron x weights+bias)
+        - - - 0.15
+            - 0.20
+            - 0.35
+          - - 0.25
+            - 0.30
+            - 0.35
+        - - - 0.40
+            - 0.45
+            - 0.60
+          - - 0.50
+            - 0.55
+            - 0.60
   - type: xor
     config:
       inputs:

@@ -28,9 +28,6 @@ class NeuralNetwork:
             weights = [(np.random.randn(neurons_per_layer[i],
                                         (num_inputs + 1) if i == 0 else (neurons_per_layer[i - 1]) + 1))
                        for i in range(0, num_layers)]
-            # for weight in weights:
-            #     print(weight.shape)
-            # print(weights)
 
         self.layers = []
         for i in range(num_layers):
@@ -121,7 +118,7 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The derivative of the mean squared loss of the network.
         """
-        return 2 * ((np.array(outputs) - np.array(targets))) / np.array(outputs).shape[0]
+        return 2 * (np.array(outputs) - np.array(targets)) / np.array(outputs).shape[0]
 
     def train(self, inputs: np.ndarray, targets: np.ndarray) -> None:
         """
