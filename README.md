@@ -17,33 +17,25 @@ https://github.com/drkostas/COSC525-Project1/blob/master/LICENSE)
 
 ## About <a name = "about"></a>
 
-Project 1 for the Deep Learning class (COSC 525). Involves the development of a Neural Network.
+Project 1 for the Deep Learning course (COSC 525). Involves the development of a Neural Network.
 
-This project already includes the following packages:
-
-- [yaml-config-wrapper](https://pypi.org/project/yaml-config-wrapper/)
-- [termcolor-logger](https://pypi.org/project/termcolor-logger/)
-
-To get started, follow their respective instructions.
+The main code is located in the [main.py](main.py) file. The Neuron, FullyConnectedLayer, 
+and NeuralNetwork classes are located in the [src folder](src).
 
 ## Getting Started <a name = "getting_started"></a>
 
-These instructions will get you a copy of the project up and running on your local machine for
-development and testing purposes. See deployment for notes on how to deploy the project on a live
-system.
+These instructions will get you a copy of the project up and running on your local machine.
 
 ### Prerequisites <a name = "prerequisites"></a>
 
 You need to have a machine with Python > 3.6 and any Bash based shell (e.g. zsh) installed.
 
 ```ShellSession
-
 $ python3.8 -V
 Python 3.8.2
 
 $ echo $SHELL
 /usr/bin/zsh
-
 ```
 
 ## Installing the requirements <a name = "installing"></a>
@@ -75,7 +67,6 @@ $ conda activate cosc525_project1
 
 $ which python
 /home/<user>/anaconda3/envs/src/bin/python
-
 ```
 
 #### main.py <a name = "src_main"></a>
