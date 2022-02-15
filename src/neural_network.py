@@ -130,7 +130,9 @@ class NeuralNetwork:
 
         for i in range(len(inputs)):
             outputs = self.calculate(inputs[i])
-            wdeltas = [self.loss_derivative(outputs, targets[i])]
+
+            act_der = [neuron.activation_derivative() for neuron in self.layers[len(self.layers)-1].neurons]
+            wdeltas = [self.loss_derivative(outputs, targets[i])*act_der]
 
             for j in range(len(self.layers) - 1, -1, -1):
                 wdeltas = self.layers[j].calculate_wdeltas(wdeltas)

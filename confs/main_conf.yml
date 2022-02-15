@@ -7,8 +7,8 @@ neural-network:
       activations:
         - logistic
       loss_function: square_error
-      learning_rate: 0.3
-      epochs: 1000
+      learning_rate: 5
+      epochs: 5000
   - type: 2x1_net
     config:
       neurons_per_layer:
@@ -17,10 +17,9 @@ neural-network:
       activations:
         - logistic
         - logistic
-        - logistic
       loss_function: square_error
       learning_rate: 0.3
-      epochs: 1000
+      epochs: 10
   - type: 2x2_net
     config:
       neurons_per_layer:
@@ -29,9 +28,8 @@ neural-network:
       activations:
         - logistic
         - logistic
-        - logistic
-      loss_function: cross_entropy
-      learning_rate: 0.3
+      loss_function: square_error
+      learning_rate: 0.5
 dataset: # multiple datasets can be defined
   - type: class_example
     config:

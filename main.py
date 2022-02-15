@@ -1,6 +1,6 @@
 import traceback
 import argparse
-
+import matplotlib as plt
 import numpy as np
 from src import Configuration, ColorLogger, Neuron, FullyConnectedLayer, NeuralNetwork
 from typing import *
@@ -81,16 +81,18 @@ def main():
             loss = netWork.calculate_loss(inputs, outputs)
             if epoch % 200 == 0:
                 logger.info(f"Epoch: {epoch} Loss: {loss}")
+        logger.info(f"Epoch: {nn_conf['epochs']} Loss: {loss}")
         # Test on the predictions
         logger.info(f'Predictions on the {dataset_type} dataset', color='cyan')
         for inp, outp in zip(inputs, outputs):
             logger.info(f"True Output: {outp} Prediction: {netWork.calculate(inp)[0]}", color='cyan')
     else:
         # Set up the weights and biases based on the class example
-        inputs = np.array(dataset_conf['inputs'])
+        inputs = [np.array(dataset_conf['inputs'])]
         desired_outputs = np.array(dataset_conf['desired_outputs'])
         weights = [np.array(weight) for weight in dataset_conf['weights']]
         # Create the network using the predefined weights and biases
+
         netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
                                 neurons_per_layer=nn_conf['neurons_per_layer'],
                                 activations=nn_conf['activations'],
@@ -107,15 +109,22 @@ def main():
         # Activate the network
         print("Inputs:", inputs)
         outputs = netWork.calculate(inputs)
-        print("Outputs:", outputs)
+        print("Pre-training Outputs:", outputs)
         # Calculate the wdeltas
+
         wdeltas = [netWork.loss_derivative(np.array(outputs), desired_outputs)]
         for j in range(len(netWork.layers) - 1, -1, -1):
             wdeltas = netWork.layers[j].calculate_wdeltas(wdeltas)
         print("Wdeltas:", wdeltas)
-    # for i in range(len(inputs)):
-    #     print(netWork.calculate(inputs[i]))
 
+        print("Weights After:")
+        print(netWork.layers[0].neurons[0].weights, "(h1) x",
+              netWork.layers[1].neurons[0].weights, "(O1)")
+        print(netWork.layers[0].neurons[1].weights, "(h2) x",
+              netWork.layers[1].neurons[1].weights, "(O2)")
+
+        outputs = netWork.calculate(inputs)
+        print("Post-training Outputs:", outputs)
 
 if __name__ == '__main__':
     try:
