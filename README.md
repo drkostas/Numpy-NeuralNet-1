@@ -39,8 +39,8 @@ You need to have a machine with Python > 3.6 and any Bash based shell (e.g. zsh)
 
 ```ShellSession
 
-$ python3.6 -V
-Python 3.6
+$ python3.8 -V
+Python 3.8.2
 
 $ echo $SHELL
 /usr/bin/zsh
@@ -75,7 +75,7 @@ First, make sure you are in the correct virtual environment:
 $ conda activate cosc525_project1
 
 $ which python
-/home/drkostas/anaconda3/envs/src/bin/python
+/home/<user>/anaconda3/envs/src/bin/python
 
 ```
 
@@ -85,18 +85,21 @@ Now, in order to run the code you can call the [main.py](main.py)
 directly.
 
 ```ShellSession
-$ python main.py --help
-usage: main.py -c CONFIG_FILE [-l LOG] [-d] [-h]
+$ python main.py -h
+usage: main.py -d DATASET -n NETWORK -c CONFIG_FILE [-l LOG] [-h]
 
 Project 1 for the Deep Learning class (COSC 525). Involves the development of a FeedForward Neural Network.
 
 Required Arguments:
+  -d DATASET, --dataset DATASET
+                        The datasets to train the network on. Options (defined in yml): [and, xor, class_example]
+  -n NETWORK, --network NETWORK
+                        The network configuration to use. Options (defined in yml): [1x1_net, 2x1_net, 2x2_net]
   -c CONFIG_FILE, --config-file CONFIG_FILE
-                        The configuration yml file
+                        The path to the yaml configuration file.
 
 Optional Arguments:
   -l LOG, --log LOG     Name of the output log file
-  -d, --debug           Enables the debug log messages
   -h, --help            Show this help message and exit
 ```
 

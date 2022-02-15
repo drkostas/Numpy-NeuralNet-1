@@ -5,6 +5,7 @@ import numpy as np
 from src import Configuration, ColorLogger, Neuron, FullyConnectedLayer, NeuralNetwork
 from typing import *
 
+# Color-logger is used to print colored messages to the console
 logger = ColorLogger(logger_name='Main', color='yellow')
 
 
@@ -70,15 +71,17 @@ def main():
         # Train the network
         inputs = np.array(dataset_conf['inputs'])
         outputs = np.array(dataset_conf['outputs'])
+        # Initialize the network
         netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
                                 neurons_per_layer=nn_conf['neurons_per_layer'],
                                 activations=nn_conf['activations'],
                                 num_inputs=inputs.shape[1],
                                 loss_function=nn_conf['loss_function'],
                                 learning_rate=nn_conf['learning_rate'])
+        # Train the network for the given number of epochs
         for epoch in range(nn_conf['epochs']):
-            netWork.train(inputs, outputs)
-            loss = netWork.calculate_loss(inputs, outputs)
+            netWork.train(inputs, outputs)  # Train the network
+            loss = netWork.calculate_loss(inputs, outputs)  # Calculate the loss
             if epoch % nn_conf['print_every'] == 0:
                 logger.info(f"Epoch: {epoch} Loss: {loss}")
         logger.info(f"Epoch: {nn_conf['epochs']} Loss: {loss}")
@@ -91,14 +94,14 @@ def main():
         inputs = [np.array(dataset_conf['inputs'])]
         desired_outputs = np.array(dataset_conf['desired_outputs'])
         weights = [np.array(weight) for weight in dataset_conf['weights']]
-        # Create the network using the predefined weights and biases
+        # Intialize the network using the predefined weights and biases
         netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
                                 neurons_per_layer=nn_conf['neurons_per_layer'],
                                 activations=nn_conf['activations'],
                                 num_inputs=2,
                                 loss_function=nn_conf['loss_function'],
                                 learning_rate=nn_conf['learning_rate'],
-                                weights=weights)
+                                weights=weights)  # Give the network the weights and biases
         # Print the network inputs and weights before training
         logger.info("Pre-training Inputs:")
         logger.info(f"{inputs[0]}", color="cyan")
@@ -108,16 +111,16 @@ def main():
         logger.info(f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
                     color="cyan")
         # Activate the network
-        outputs = netWork.calculate(inputs[0])
+        outputs = netWork.calculate(inputs[0])  # Feed-forward the network
         logger.info(f"Outputs after calling `activate()`:")
         logger.info(f"{outputs}", color="cyan")
-        # Calculate the wdeltas
+        # Calculate the wdeltas - single step of backpropagation
         wdeltas = [netWork.loss_derivative(np.array(outputs), desired_outputs)]
         for j in range(len(netWork.layers) - 1, -1, -1):
             wdeltas = netWork.layers[j].calculate_wdeltas(wdeltas)
+        # Print the wdeltas, the weights, and the outputs after backpropagation
         logger.info("Wdeltas after calling `calculate_wdeltas()`:")
         logger.info(f"{wdeltas}", color="cyan")
-
         logger.info("Weights after a single step of back-propagation:")
         logger.info(f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
                     color="cyan")

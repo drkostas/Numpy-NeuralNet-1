@@ -18,6 +18,7 @@ class FullyConnectedLayer:
         self.activation = activation
         self.num_inputs = num_inputs
 
+        # Initialize neurons
         self.neurons = []
         for neuron_ind in range(self.neurons_per_layer):
             self.neurons.append(Neuron(self.activation, self.num_inputs, lr, weights[neuron_ind]))
@@ -31,7 +32,7 @@ class FullyConnectedLayer:
         """
         outputs = []
         for neuron in self.neurons:
-            outputs.append(neuron.calculate(inputs))
+            outputs.append(neuron.calculate(inputs))  # Calculate output of each neuron
         return outputs
 
     def calculate_wdeltas(self, wdeltas_next: List) -> List:
@@ -42,10 +43,12 @@ class FullyConnectedLayer:
         """
         wdeltas = []
         for ind, neuron in enumerate(self.neurons):
+            # Calculate weight deltas of each neuron
             fwdelta = []
             for fwdeltas in wdeltas_next:
                 fwdelta.append(fwdeltas[ind])
             wdelta = neuron.calc_partial_derivative(fwdelta)
+            # Update weights
             neuron.update_weights()
             wdeltas.append(wdelta)
         return wdeltas
