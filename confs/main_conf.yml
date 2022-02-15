@@ -9,6 +9,7 @@ neural-network:
       loss_function: square_error
       learning_rate: 5
       epochs: 5000
+      print_every: 100
   - type: 2x1_net
     config:
       neurons_per_layer:
@@ -20,6 +21,7 @@ neural-network:
       loss_function: square_error
       learning_rate: 0.3
       epochs: 10
+      print_every: 2
   - type: 2x2_net
     config:
       neurons_per_layer:
@@ -30,6 +32,8 @@ neural-network:
         - logistic
       loss_function: square_error
       learning_rate: 0.5
+      epochs: 100
+      print_every: 100
 dataset: # multiple datasets can be defined
   - type: class_example
     config:

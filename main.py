@@ -23,7 +23,7 @@ def get_args() -> argparse.Namespace:
     config_file_params = {
         'type': argparse.FileType('r'),
         'required': True,
-        'help': "The configuration yml file"
+        'help': "The path to the yaml configuration file."
     }
     required_args.add_argument('-d', '--dataset', required=True,
                                help="The datasets to train the network on. "
@@ -64,10 +64,10 @@ def main():
     dataset_type = dataset['type']
 
     # ------- Start of Code ------- #
+    logger.nl()  # New line
+    logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset.', color='green')
     if args.dataset != 'class_example':
         # Train the network
-        logger.nl()  # New line
-        logger.info(f'Training the `{nn_type}` network on the `{dataset_type}` dataset')
         inputs = np.array(dataset_conf['inputs'])
         outputs = np.array(dataset_conf['outputs'])
         netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
@@ -79,7 +79,7 @@ def main():
         for epoch in range(nn_conf['epochs']):
             netWork.train(inputs, outputs)
             loss = netWork.calculate_loss(inputs, outputs)
-            if epoch % 200 == 0:
+            if epoch % nn_conf['print_every'] == 0:
                 logger.info(f"Epoch: {epoch} Loss: {loss}")
         logger.info(f"Epoch: {nn_conf['epochs']} Loss: {loss}")
         # Test on the predictions
@@ -92,7 +92,6 @@ def main():
         desired_outputs = np.array(dataset_conf['desired_outputs'])
         weights = [np.array(weight) for weight in dataset_conf['weights']]
         # Create the network using the predefined weights and biases
-
         netWork = NeuralNetwork(num_layers=len(nn_conf['neurons_per_layer']),
                                 neurons_per_layer=nn_conf['neurons_per_layer'],
                                 activations=nn_conf['activations'],
@@ -100,31 +99,34 @@ def main():
                                 loss_function=nn_conf['loss_function'],
                                 learning_rate=nn_conf['learning_rate'],
                                 weights=weights)
-        # Print the weights and biases
-        print("Weights Before:")
-        print(netWork.layers[0].neurons[0].weights, "(h1) x",
-              netWork.layers[1].neurons[0].weights, "(O1)")
-        print(netWork.layers[0].neurons[1].weights, "(h2) x",
-              netWork.layers[1].neurons[1].weights, "(O2)")
+        # Print the network inputs and weights before training
+        logger.info("Pre-training Inputs:")
+        logger.info(f"{inputs[0]}", color="cyan")
+        logger.info("Pre-training Weights:")
+        logger.info(f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
+                    color="cyan")
+        logger.info(f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
+                    color="cyan")
         # Activate the network
-        print("Inputs:", inputs)
-        outputs = netWork.calculate(inputs)
-        print("Pre-training Outputs:", outputs)
+        outputs = netWork.calculate(inputs[0])
+        logger.info(f"Outputs after calling `activate()`:")
+        logger.info(f"{outputs}", color="cyan")
         # Calculate the wdeltas
-
         wdeltas = [netWork.loss_derivative(np.array(outputs), desired_outputs)]
         for j in range(len(netWork.layers) - 1, -1, -1):
             wdeltas = netWork.layers[j].calculate_wdeltas(wdeltas)
-        print("Wdeltas:", wdeltas)
+        logger.info("Wdeltas after calling `calculate_wdeltas()`:")
+        logger.info(f"{wdeltas}", color="cyan")
 
-        print("Weights After:")
-        print(netWork.layers[0].neurons[0].weights, "(h1) x",
-              netWork.layers[1].neurons[0].weights, "(O1)")
-        print(netWork.layers[0].neurons[1].weights, "(h2) x",
-              netWork.layers[1].neurons[1].weights, "(O2)")
+        logger.info("Weights after a single step of back-propagation:")
+        logger.info(f"{netWork.layers[0].neurons[0].weights} (h1) x {netWork.layers[1].neurons[0].weights} (O1)",
+                    color="cyan")
+        logger.info(f"{netWork.layers[0].neurons[1].weights} (h1) x {netWork.layers[1].neurons[1].weights} (O1)",
+                    color="cyan")
+        outputs = netWork.calculate(inputs[0])
+        logger.info("Post-training Outputs:")
+        logger.info(f"{outputs}", color="cyan")
 
-        outputs = netWork.calculate(inputs)
-        print("Post-training Outputs:", outputs)
 
 if __name__ == '__main__':
     try:
