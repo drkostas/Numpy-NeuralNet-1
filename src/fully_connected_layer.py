@@ -47,6 +47,7 @@ class FullyConnectedLayer:
             fwdelta = []
             for fwdeltas in wdeltas_next:
                 fwdelta.append(fwdeltas[ind])
+            fwdelta = np.sum(fwdelta)
             wdelta = neuron.calc_partial_derivative(fwdelta)
             # Update weights
             neuron.update_weights()

@@ -44,7 +44,7 @@ class Neuron:
 
     # Calculates the new delta*w and calls upon the derivative function
     def calc_partial_derivative(self, deltaw_1):
-        delta = np.sum(deltaw_1) * self.activation_derivative()
+        delta = deltaw_1 * self.activation_derivative()
         self.derivative(delta)
         return delta * self.weights
 
