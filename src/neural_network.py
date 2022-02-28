@@ -59,7 +59,7 @@ class NeuralNetwork:
         for i in range(len(inputs)):
             outputs = np.array(self.calculate(inputs[i]))
             if self.loss_function == "cross_entropy":
-                err = err + self.cross_entropy_loss(outputs, targets[i])
+                err = err + self.binary_cross_entropy_loss(outputs, targets[i])
             elif self.loss_function == "square_error":
                 err = err + self.square_error_loss(outputs, targets[i])
             else:
@@ -67,9 +67,9 @@ class NeuralNetwork:
         return err
 
     @staticmethod
-    def cross_entropy_loss(outputs: np.ndarray, targets: np.ndarray) -> float:
+    def binary_cross_entropy_loss(outputs: np.ndarray, targets: np.ndarray) -> float:
         """
-        Calculates the cross entropy loss of the network for the given outputs and targets.
+        Calculates the binary cross entropy loss of the network for the given outputs and targets.
         :param outputs: The outputs of the network.
         :param targets: The targets for the outputs.
         :return: The cross entropy loss of the network.
@@ -96,22 +96,24 @@ class NeuralNetwork:
         :return: The derivative of the loss of the network.
         """
         if self.loss_function == "cross_entropy":
-            return self.cross_entropy_loss_derivative(outputs, targets)
+            return self.binary_cross_entropy_loss_derivative(outputs, targets)
         elif self.loss_function == "square_error":
             return self.square_error_loss_derivative(outputs, targets)
         else:
             raise ValueError(f"Invalid loss function. `{self.loss_function}` is not suppoerted.")
 
     @staticmethod
-    def cross_entropy_loss_derivative(outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
+    def binary_cross_entropy_loss_derivative(outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
         """
-        Calculates the derivative of the cross entropy loss of the network
+        Calculates the derivative of the binary cross entropy loss of the network
         for the given outputs and targets.
         :param outputs: The outputs of the network.
         :param targets: The targets for the outputs.
         :return: The derivative of the cross entropy loss of the network.
         """
-        return outputs - targets
+        first_term = targets/outputs
+        second_term = (1-targets)/(1-outputs)
+        return -first_term + second_term
 
     @staticmethod
     def square_error_loss_derivative(outputs: np.ndarray, targets: np.ndarray) -> np.ndarray:
