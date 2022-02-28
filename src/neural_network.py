@@ -74,7 +74,9 @@ class NeuralNetwork:
         :param targets: The targets for the outputs.
         :return: The cross entropy loss of the network.
         """
-        return -np.sum(targets * np.log(outputs)) / outputs.shape[0]
+        div_by_N = 1/outputs.shape[0]
+        sums = np.sum(targets * np.log(outputs)+(1-targets)*np.log(1-outputs))
+        return div_by_N * (-sums)
 
     @staticmethod
     def square_error_loss(outputs: np.ndarray, targets: np.ndarray) -> float:
