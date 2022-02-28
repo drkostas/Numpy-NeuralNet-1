@@ -11,7 +11,7 @@ neural-network: # List of neural networks
       epochs: 5000
       print_every: 500
   - type: 2x1_net  # Name of the neural network (same used in the --network option)
-      config:  # Configuration of the neural network
+    config:  # Configuration of the neural network
       neurons_per_layer:
         - 2
         - 1
@@ -23,14 +23,14 @@ neural-network: # List of neural networks
       epochs: 5000
       print_every: 500
   - type: 2x2_net  # Name of the neural network (same used in the --network option)
-      config:  # Configuration of the neural network
+    config:  # Configuration of the neural network
       neurons_per_layer:
         - 2
         - 2
       activations:
         - logistic
         - logistic
-      loss_function: square_error
+      loss_function: cross_entropy
       learning_rate: 0.5
       epochs: 100
       print_every: 100
