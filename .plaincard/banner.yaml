@@ -1,0 +1,14 @@
+kind: banner
+name: Numpy-NeuralNet-1
+line: A feed-forward neural network written with NumPy only and trained by backpropagation.
+accent: blue
+diagram:
+- box:
+    text: input
+- arrow
+- box:
+    text: hidden
+    accent: true
+- arrow
+- box:
+    text: output
