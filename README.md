@@ -1,3 +1,5 @@
+![Numpy-NeuralNet-1](docs/images/banner.png)
+
 # COSC525: Project 1: Artificial Neural Networks
 
 [![GitHub license](https://img.shields.io/badge/license-Apache-blue.svg)](
